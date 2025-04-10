@@ -1,0 +1,109 @@
+/* استایل‌های اختصاصی صفحات احراز هویت */
+.auth-card {
+    border: none;
+    background: #fff;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.auth-card .card-body {
+    padding: 30px;
+}
+
+.auth-card .title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #3c4858;
+}
+
+.auth-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.auth-form .form-group label {
+    font-weight: 500;
+    font-size: 14px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.auth-form .form-control {
+    height: 45px;
+    border: 1px solid #e9ecef;
+    background-color: #f8f9fa;
+    font-size: 14px;
+    border-radius: 5px;
+    transition: all 0.5s;
+}
+
+.auth-form .form-control:focus {
+    border-color: #1f5bd1;
+    background-color: #fff;
+    box-shadow: none;
+}
+
+.auth-form .icons {
+    position: absolute;
+    top: 38px;
+    right: 15px;
+    color: #8c98a4;
+    font-size: 18px;
+}
+
+.auth-form .btn {
+    height: 45px;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 5px;
+}
+
+.custom-checkbox .custom-control-label {
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.custom-control-input:checked~.custom-control-label::before {
+    background-color: #1f5bd1;
+    border-color: #1f5bd1;
+}
+
+/* اعتبارسنجی فرم */
+.error {
+    color: #f05a05;
+    font-size: 13px;
+    margin-top: 5px;
+    display: block;
+}
+
+.is-invalid {
+    border-color: #f05a05 !important;
+}
+
+.is-valid {
+    border-color: #1d8671 !important;
+}
+
+/* صفحه فراموشی رمز عبور */
+.forgot-password-box {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* صفحه بازنشانی رمز عبور */
+.reset-password-box {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* ریسپانسیو */
+@media (max-width: 768px) {
+    .auth-card {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .auth-card .card-body {
+        padding: 20px;
+    }
+}
