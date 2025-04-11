@@ -20,6 +20,8 @@
     <link href="{% static 'main/css/tabler-icons.min.css' %}" rel="stylesheet" />
     <!-- Main Css -->
     <link href="{% static 'main/css/style.min.css' %}" rel="stylesheet" type="text/css" id="theme-opt" />
+    <link href="{% static 'accounts/css/auth-style.css' %}" rel="stylesheet" type="text/css" />
+
 
 </head>
 
@@ -71,7 +73,17 @@
             <div id="navigation">
                 <!-- Navigation Menu-->
                 <ul class="navigation-menu nav-left">
-                    <li><a href="index-agency.html" class="sub-menu-item">خانه</a></li>
+                    {% if user.is_authenticated %}
+                    <li><a href="index-agency.html" class="sub-menu-item">{{ user.email }}</a></li>
+                    <li><a href="{% url "login" %}" class="sub-menu-item"> خروج</a></li>
+
+                    {% else %}
+                    <li><a href="{% url "login" %}" class="sub-menu-item">ورود</a></li>
+                    <li><a href="{% url "signup" %}" class="sub-menu-item">ثبت نام</a></li>
+
+
+                    {% endif %}
+                    <li><a href="/" class="sub-menu-item">خانه</a></li>
 
                     <li><a href="agency-aboutus.html" class="sub-menu-item">درباره ما</a></li>
 
@@ -242,6 +254,8 @@
     <script src="{% static 'main/js/plugins.init.js' %}"></script>
     <!--Note: All init js like tiny slider, counter, lightbox, gallery etc.-->
     <script src="{% static 'main/js/app.js' %}"></script>
+    <script src="{% static 'accounts/js/auth.js' %}"></script>
+
     <!--Note: All important javascript like page loader, menu, sticky menu, menu-toggler, one page menu etc. -->
 </body>
 

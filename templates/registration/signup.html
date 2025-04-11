@@ -1,53 +1,10 @@
+{% extends "base.html" %}
 {% load static %}
 {% load crispy_forms_tags  %}
 
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-    <meta charset="utf-8" />
-    <title>ثبت‌نام - گت بلاگ</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ثبت‌نام در گت بلاگ" />
-    <!-- favicon -->
-    <link href="{% static 'main/images/favicon.ico' %}" rel="shortcut icon">
-    <!-- لینک فایل‌های CSS اصلی -->
-    <link href="{% static 'main/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
-    <link href="{% static 'main/css/materialdesignicons.min.css' %}" rel="stylesheet" type="text/css" />
-    <link href="{% static 'main/css/style.min.css' %}" rel="stylesheet" type="text/css" />
-    <!-- لینک فایل CSS اختصاصی صفحات احراز هویت -->
-    <link href="{% static 'accounts/css/auth-style.css' %}" rel="stylesheet" type="text/css" />
-</head>
+{% block title %}ثبت نام {% endblock title %}
 
-<body class="bg-light">
-    <!-- Navbar Start -->
-    <header id="topnav" class="defaultscroll sticky bg-white">
-        <div class="container">
-            <a class="logo" href="index.html">
-                <img src="{% static 'main/images/logo.png' %}" height="22" class="big-logo" alt="">
-                <img src="{% static 'main/images/logo-icon.png' %}" height="28" class="small-logo" alt="">
-            </a>
-
-            <div class="menu-extras">
-                <div class="menu-item">
-                    <a class="navbar-toggle" id="isToggle" onclick="toggleMenu()">
-                        <div class="lines">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-
-            <div id="navigation">
-                <ul class="navigation-menu nav-left">
-                    <li><a href="index.html" class="sub-menu-item">بازگشت به خانه</a></li>
-                </ul>
-            </div>
-        </div>
-    </header>
-    <!-- Navbar End -->
-
+{% block content %}
     <!-- صفحه ثبت‌نام -->
     <section class="bg-half-100 d-table w-100">
         <div class="container">
@@ -81,34 +38,4 @@
         </div>
     </section>
     <!-- پایان صفحه ثبت‌نام -->
-
-    <!-- Footer Start -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="footer-py-30 footer-border">
-                        <div class="row align-items-center">
-                            <div class="col-sm-7">
-                                <div class="text-sm-start">
-                                    <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> گت بلاگ. طراحی شده با <i class="mdi mdi-heart text-danger"></i></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- Footer End -->
-
-    <!-- Back to top -->
-    <a href="#" onclick="topFunction()" id="back-to-top" class="back-to-top rounded-pill"><i class="mdi mdi-arrow-up"></i></a>
-    
-    <!-- javascript -->
-    <script src="{% static 'main/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'main/js/app.js' %}"></script>
-    <!-- اسکریپت اختصاصی احراز هویت -->
-    <script src="{% static 'accounts/js/auth.js' %}"></script>
-</body>
-</html>
+{% endblock content %}
