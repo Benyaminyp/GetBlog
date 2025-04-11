@@ -4,6 +4,9 @@ from django.urls import reverse_lazy
 from django.views import generic
 from .forms import SignupForm
 from .models import CustomUser
+from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.views import PasswordResetDoneView
+from django.shortcuts import redirect
 
 class SignupView(generic.CreateView):
     model = CustomUser
@@ -17,3 +20,4 @@ class SignupView(generic.CreateView):
         login(self.request, user)  # Auto-login the user
         messages.success(self.request, "ثبت‌نام با موفقیت انجام شد و شما وارد شدید.")
         return response
+
