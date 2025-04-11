@@ -1,4 +1,5 @@
 {% load static %}
+{% load crispy_forms_tags  %}
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -60,7 +61,7 @@
                             <form method="post" class="login-form mt-4" >
                                 {% csrf_token %}
                                 <div class="row">
-                                   {{ form }}
+                                   {{ form|crispy }}
                                      {% comment %} <div class="col-md-12">
                                         <div class="form-group position-relative">
                                             <label>نام کاربری یا ایمیل <span class="text-danger">*</span></label>

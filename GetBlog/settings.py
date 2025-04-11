@@ -42,12 +42,19 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     
     # third party apps
+    "crispy_forms",
+    "crispy_bootstrap5",
 ]
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+# Crispy settings
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
