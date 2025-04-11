@@ -57,9 +57,11 @@
                                 <h4 class="title mb-4">ورود به حساب کاربری</h4>
                             </div>
 
-                            <form class="login-form mt-4" id="loginForm">
+                            <form method="post" class="login-form mt-4" >
+                                {% csrf_token %}
                                 <div class="row">
-                                    <div class="col-md-12">
+                                   {{ form }}
+                                     {% comment %} <div class="col-md-12">
                                         <div class="form-group position-relative">
                                             <label>نام کاربری یا ایمیل <span class="text-danger">*</span></label>
                                             <i class="mdi mdi-account ml-3 icons"></i>
@@ -90,16 +92,16 @@
                                                 <a href="#" class="text-dark font-weight-bold">رمز عبور را فراموش کرده‌اید؟</a>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> 
+                                    {% endcomment %}
 
-                                    <div class="col-md-12">
+                                    <div class="col-md-12 my-3 ">
                                         <button class="btn btn-primary btn-block" type="submit">ورود</button>
-                                    </div>
-
+                                    </div> 
                                     <div class="mx-auto">
                                         <p class="mb-0 mt-3">حساب کاربری ندارید؟ <a href="#" class="text-dark font-weight-bold">ثبت‌نام کنید</a></p>
                                     </div>
-                                </div>
+                                </div> 
                             </form>
                         </div>
                     </div>
