@@ -32,7 +32,7 @@ def register_view(request):
         for error in errors:
             messages.error(request, error)
 
-    return render(request, 'register.html')
+    return render(request, 'accounts/register.html')
 
 
 def login_view(request):
@@ -46,8 +46,7 @@ def login_view(request):
             return redirect('home')
         messages.error(request, 'نام کاربری یا رمز عبور نامعتبر')
 
-    return render(request, 'login.html')
-
+    return render(request, 'accounts/login.html')
 
 
 def logout_view(request):
@@ -83,4 +82,4 @@ def forgot_password_view(request):
         for error in errors:
             messages.error(request, error)
 
-    return render(request, 'forgot_password.html')
+    return render(request, 'accounts/forgot-password.html')
