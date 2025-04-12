@@ -4,11 +4,12 @@ from django.urls import reverse_lazy
 from django.views import generic
 from .forms import SignupForm
 from .models import CustomUser
-from django.contrib.auth.forms import PasswordResetForm
-from django.contrib.auth.views import PasswordResetDoneView
 from django.shortcuts import redirect
 
 class SignupView(generic.CreateView):
+    '''
+    'Handles user sign-up and logs the user in automatically after successful registration.
+    '''
     model = CustomUser
     form_class = SignupForm
     template_name = 'registration/signup.html'
