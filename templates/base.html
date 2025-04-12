@@ -8,8 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Premium Bootstrap 5 Blog Template" />
     <meta name="keywords" content="Startup, Business, Multi-uses, HTML, Clean, Modern, Creative" />
-    <meta name="author" content="aryaazadeh" />
-    <meta name="website" content="https://aryazdh.ir/" />
     <meta name="Version" content="v1.0.0" />
     <!-- favicon -->
     <link href="{% static 'main/images/favicon.ico' %}" rel="shortcut icon">
@@ -22,6 +20,8 @@
     <link href="{% static 'main/css/tabler-icons.min.css' %}" rel="stylesheet" />
     <!-- Main Css -->
     <link href="{% static 'main/css/style.min.css' %}" rel="stylesheet" type="text/css" id="theme-opt" />
+    <link href="{% static 'accounts/css/auth-style.css' %}" rel="stylesheet" type="text/css" />
+
 
 </head>
 
@@ -64,16 +64,23 @@
                     </div>
                 </li>
 
+                {% if user.is_authenticated %}
                 <li class="list-inline-item ms-2">
                     <a href="author.html"><img src="{% static 'main/images/users/user-3.jpg' %}" class="rounded-pill avatar avatar-sm-sm"
                             alt=""></a>
                 </li>
+                {% else %}
+                <a href="{% url "login" %}">ورود / ثبت نام</a>
+                {% endif %}
+                
             </ul>
 
             <div id="navigation">
                 <!-- Navigation Menu-->
                 <ul class="navigation-menu nav-left">
-                    <li><a href="index-agency.html" class="sub-menu-item">خانه</a></li>
+                    
+                    <li><a href="/" class="sub-menu-item">خانه</a></li>
+                    <li><a href="#blog" class="sub-menu-item">مقالات</a></li>
 
                     <li><a href="agency-aboutus.html" class="sub-menu-item">درباره ما</a></li>
 
@@ -87,7 +94,12 @@
     </header>
     <!--end header-->
     <!-- Navbar End -->
-
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{message.tags}} mt-3">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    
     {% block content %}{% endblock %}
 
     <!-- Footer Start -->
@@ -244,6 +256,8 @@
     <script src="{% static 'main/js/plugins.init.js' %}"></script>
     <!--Note: All init js like tiny slider, counter, lightbox, gallery etc.-->
     <script src="{% static 'main/js/app.js' %}"></script>
+    <script src="{% static 'accounts/js/auth.js' %}"></script>
+
     <!--Note: All important javascript like page loader, menu, sticky menu, menu-toggler, one page menu etc. -->
 </body>
 

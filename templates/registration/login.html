@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags  %}
+
+{% block title %}ورود  {% endblock title %}
+{% block content %}
+
+    <!-- صفحه ورود -->
+    <section class="bg-half-100 d-table w-100">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-5 col-md-8">
+                    <div class="card auth-card shadow rounded border-0">
+                        <div class="card-body">
+                            <div class="text-center">
+                                <h4 class="title mb-4">ورود به حساب کاربری</h4>
+                            </div>
+
+                            <form method="post" class="login-form mt-4" >
+                                {% csrf_token %}
+                                <div class="row">
+                                   {{ form|crispy }}
+                                     
+                                    <div class="col-md-12 my-3 ">
+                                        <button class="btn btn-primary btn-block" type="submit">ورود</button>
+                                    </div> 
+                                    <div class="mx-auto">
+                                        <p class="mb-0 mt-3">حساب کاربری ندارید؟ <a href="#" class="text-dark font-weight-bold">ثبت‌نام کنید</a></p>
+                                    </div>
+
+                                    <div class="mx-auto">
+                                        <p class="mb-0 mt-3"> رمز عبور خود را فراموش کرده‌اید؟ <a href="{% url "password_reset" %}" class="text-dark font-weight-bold">فراموشی رمز عبور</a></p>
+                                    </div>
+
+                                </div> 
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- پایان صفحه ورود -->
+
+{% endblock content %}
+
+
