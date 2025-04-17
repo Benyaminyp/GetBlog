@@ -31,7 +31,7 @@
     <header id="topnav" class="defaultscroll sticky bg-white">
         <div class="container">
             <!-- Logo container-->
-            <a class="logo" href="index-2.html">
+            <a class="logo" href="{% url 'core:home' %}">
                 <img src="{% static 'main/images/logo.png' %}" height="22" class="big-logo" alt="">
                 <img src="{% static 'main/images/logo-icon.png' %}" height="28" class="small-logo" alt="">
             </a>
@@ -82,7 +82,7 @@
                     <li><a href="/" class="sub-menu-item">خانه</a></li>
                     <li><a href="#blog" class="sub-menu-item">مقالات</a></li>
 
-                    <li><a href="agency-aboutus.html" class="sub-menu-item">درباره ما</a></li>
+                    <li><a href="{% url 'core:about' %}" class="sub-menu-item">درباره ما</a></li>
 
                     <li><a href="agency-contact.html" class="sub-menu-item">تماس با ما</a></li>
                 </ul>
@@ -110,25 +110,19 @@
                     <div class="footer-py-60">
                         <div class="row">
                             <div class="col-lg-4 col-12 mb-0 mb-md-4 pb-0 pb-md-2">
-                                <a href="#" class="logo-footer">
+                                <a href="{% url 'core:home' %}" class="logo-footer">
                                     <img src="{% static 'main/images/logo-light.png' %}" height="22" alt="">
                                 </a>
 
                                 <p class="mt-4">پروژه های طراحی ما تازه و ساده هستند و سود زیادی برای کسب و کار شما
                                     خواهند داشت. درباره کار ما بیشتر بدانید!</p>
                                 <ul class="list-unstyled social-icon foot-social-icon mb-0 mt-4">
-                                    <li class="list-inline-item"><a href="javascript:void(0)" class="rounded"><i
-                                                class="mdi mdi-facebook"></i></a></li>
-                                    <li class="list-inline-item"><a href="javascript:void(0)" class="rounded"><i
-                                                class="mdi mdi-instagram"></i></a></li>
-                                    <li class="list-inline-item"><a href="javascript:void(0)" class="rounded"><i
-                                                class="mdi mdi-twitter"></i></a></li>
-                                    <li class="list-inline-item"><a href="javascript:void(0)" class="rounded"><i
-                                                class="mdi mdi-github"></i></a></li>
-                                    <li class="list-inline-item"><a href="javascript:void(0)" class="rounded"><i
-                                                class="mdi mdi-linkedin"></i></a></li>
-                                    <li class="list-inline-item"><a href="javascript:void(0)" class="rounded"><i
-                                                class="mdi mdi-whatsapp"></i></a></li>
+                                    {% if site_settings.instagram_link %}
+                                        <li class="list-inline-item"><a href="{{ site_settings.instagram_link }}" class="rounded"><i class="mdi mdi-instagram"></i></a></li>
+                                    {% endif %}
+                                    {% if site_settings.telegram_link %}
+                                        <li class="list-inline-item"><a href="{{ site_settings.telegram_link }}" class="rounded"><i class="mdi mdi-telegram"></i></a></li>
+                                    {% endif %}
                                 </ul>
                                 <!--end icon-->
                             </div>
@@ -137,7 +131,7 @@
                             <div class="col-lg-2 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
                                 <h5 class="footer-head">شرکت</h5>
                                 <ul class="list-unstyled footer-list mt-4">
-                                    <li><a href="javascript:void(0)" class="text-foot"><i
+                                    <li><a href="{% url 'core:about' %}" class="text-foot"><i
                                                 class="ti ti-chevron-left me-1"></i> درباره ما</a></li>
                                     <li><a href="javascript:void(0)" class="text-foot"><i
                                                 class="ti ti-chevron-left me-1"></i> خدمات</a></li>
@@ -172,23 +166,27 @@
                                 <h5 class="footer-head">سوالی دارید؟</h5>
 
                                 <ul class="list-unstyled footer-list mt-4">
-                                    <li class="d-flex">
-                                        <span class="ti ti-mail fs-5"></span>
-                                        <div class="flex-1 me-2">
-                                            <span class="d-block text-light">با ما در تماس باشید</span>
-                                            <a href="mailto:contact@example.com"
-                                                class="text-foot d-block mt-2">contact@example.com</a>
-                                        </div>
-                                    </li>
+                                    {% if site_settings.email %}
+                                        <li class="d-flex">
+                                            <span class="ti ti-mail fs-5"></span>
+                                            <div class="flex-1 me-2">
+                                                <span class="d-block text-light">با ما در تماس باشید</span>
+                                                <a href="mailto:contact@example.com"
+                                                    class="text-foot d-block mt-2">{{ site_settings.email }}</a>
+                                            </div>
+                                        </li>
+                                    {% endif %}
 
-                                    <li class="d-flex">
-                                        <span class="ti ti-phone fs-5"></span>
-                                        <div class="flex-1 me-2">
-                                            <span class="d-block text-light">تماس بگیرید</span>
-                                            <a href="tel:+152534-468-854"
-                                                class="text-foot d-block mt-2">+152534-468-854</a>
-                                        </div>
-                                    </li>
+                                    {% if site_settings.phone %}
+                                        <li class="d-flex">
+                                            <span class="ti ti-phone fs-5"></span>
+                                            <div class="flex-1 me-2">
+                                                <span class="d-block text-light">تماس بگیرید</span>
+                                                <a href="tel:+152534-468-854"
+                                                    class="text-foot d-block mt-2">{{ site_settings.phone }}</a>
+                                            </div>
+                                        </li>
+                                    {% endif %}
                                 </ul>
                             </div>
                             <!--end col-->
@@ -209,12 +207,7 @@
                         <div class="row align-items-center">
                             <div class="col-sm-6">
                                 <div class="text-sm-start">
-                                    <p class="mb-0">©
-                                        <script>document.write(new Date().getFullYear())</script> گت بلاگ. راستچین شده
-                                        با<i class="mdi mdi-heart text-danger"></i> توسط <a
-                                            href="https://www.rtl-theme.com/author/aryaazadeh/products/" target="_blank"
-                                            class="text-reset">آریا آزاده</a>. فروش فقط در راستچین
-                                    </p>
+                                    <p class="mb-0">© {{ site_settings.copy_right }}</p>
                                 </div>
                             </div>
                             <!--end col-->
