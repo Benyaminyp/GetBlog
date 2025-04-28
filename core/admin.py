@@ -16,3 +16,17 @@ class NewsletterAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     @admin.display(description='تاریخ عضویت', ordering='date_membership')
     def get_date_membership_jalali(self, obj):
         return datetime2jalali(obj.date_membership).strftime('%a, %d %b %Y')
+
+
+@admin.register(models.Contact)
+class ContactAdmin(admin.ModelAdmin):
+    list_display = ('name', 'get_created_at_jalali', 'get_subject')
+    list_filter = ('created_at',)
+    search_fields = ('subject',)
+
+    @admin.display(description='تاریخ ارسال', ordering='created_at')
+    def get_created_at_jalali(self, obj):
+        return datetime2jalali(obj.created_at).strftime('%a, %d %b %Y')
+
+    class Media:
+        js = ('main/js/custom_admin_1.js',)
