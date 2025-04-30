@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+{% block title %}{{ article.title|truncatewords:5 }}{% endblock %}
+{% load static %}
+{% load jalali_tags %}
+
+{% block content %}
+    <!-- Start Hero -->
+    <section class="bg-half-170">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="title-heading">
+                        <h4 class="heading fw-semibold">{{ article.title }}</h4>
+
+                        <div class="d-flex mt-4 pb-4 align-items-center justify-content-between">
+                            <div class="d-flex author align-items-center">
+                                {% if article.author.image %}
+                                    <img src="{{ article.author.image.url }}" class="avatar avatar-md-sm rounded-pill"
+                                         alt="{{ article.author.user.email }}">
+                                {% else %}
+                                    <img src="{% static 'main/images/profile.png' %}"
+                                         class="avatar avatar-md-sm rounded-pill" alt="{{ article.author.user.email }}">
+                                {% endif %}
+                                <div class="me-2">
+                                    {% if article.author.first_name and article.author.last_name %}
+                                        <h6 class="user d-block mb-0"><a href="{% url 'blog:author_detail' article.author.user.email %}"
+                                                                         class="text-dark">{{ article.author.first_name }} {{ article.author.last_name }}</a>
+                                        </h6>
+                                    {% else %}
+                                        <h6 class="user d-block mb-0"><a href="{% url 'blog:author_detail' article.author.user.email %}"
+                                                                         class="text-dark">{{ article.author.user.email }}</a>
+                                        </h6>
+                                    {% endif %}
+                                    <small class="date text-muted mb-0">نویسنده محتوا</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <ul class="list-inline d-flex pt-4 mb-0 border-top justify-content-between">
+                            <li class="list-inline-item text-muted"><i class="uil uil-calender h5 text-dark"></i>
+                                {{ article.created_at|to_jalali:'%Y/%m/%d' }}
+                            </li>
+                            <li class="list-inline-item text-muted">
+                                {{ article.views }} <i class="uil uil-eye h5 text-dark"></i>
+                                {{ article.like_set.count }}
+                                {% if request.user.is_authenticated %}
+                                    {% if user_has_liked %}
+                                        <a href="{% url 'blog:like' article.slug %}" class="fas fa-heart h6 text-danger"></a>
+                                    {% else %}
+                                        <a href="{% url 'blog:like' article.slug %}" class="uil uil-heart h5 text-dark"></a>
+                                    {% endif %}
+                                {% else %}
+                                    <a href="{% url 'blog:like' article.slug %}" class="uil uil-heart h5 text-dark"></a>
+                                {% endif %}
+
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-5">
+                        <p class="text-muted">{{ article.description|safe }}</p>
+                    </div>
+                    <!--end row-->
+
+                    <div class="card shadow rounded border-0 mt-5">
+                        <div class="card-body">
+                            <h5 class="card-title mb-0">نظرات :</h5>
+
+                            <ul class="media-list list-unstyled mt-5 mb-0">
+                                {% for comment in article.comments.all %}
+                                    {% if comment.status == True %}
+                                        <li class="mt-4">
+                                            <div class="d-flex justify-content-between">
+                                                <div class="d-flex align-items-center">
+                                                    <a class="ps-3" href="#">
+                                                        {% if comment.author.image %}
+                                                            <img src="{{ comment.author.image.url }}"
+                                                                 class="img-fluid avatar avatar-md-sm rounded-circle shadow"
+                                                                 alt="{{ comment.author.user.email }}">
+                                                        {% else %}
+                                                            <img src="{% static 'main/images/profile.png' %}"
+                                                                 class="img-fluid avatar avatar-md-sm rounded-circle shadow"
+                                                                 alt="{{ comment.author.user.email }}">
+                                                        {% endif %}
+                                                    </a>
+                                                    <div class="commentor-detail">
+                                                        {% if comment.author.first_name and comment.author.last_name %}
+                                                            <h6 class="mb-0">{{ comment.author.first_name }} {{ comment.author.last_name }}</h6>
+                                                        {% else %}
+                                                            <h6 class="mb-0">{{ comment.author.user.email }}</h6>
+                                                        {% endif %}
+                                                        <small class="text-muted">{{ comment.created_at|to_jalali:'%Y/%m/%d' }}</small>
+                                                    </div>
+                                                </div>
+                                                {% if request.user.is_authenticated and comment.author == request.user %}
+                                                    <a href="{% url 'blog:delete_comment' comment.id %}" class="text-danger"><i class="mdi mdi-delete"></i> حذف</a>
+                                                {% endif %}
+                                            {% if request.user.is_authenticated and comment.author.user == request.user %}
+                                                <a href="{% url 'blog:delete_comment' comment.id %}" class="text-danger">
+                                                    <i class="mdi mdi-delete"></i> حذف
+                                                </a>
+                                            {% endif %}
+                                            </div>
+                                            <div class="mt-3">
+                                                <p class="text-muted p-3 bg-light rounded">{{ comment.body }}</p>
+                                            </div>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card shadow rounded border-0 mt-5">
+                        <div class="card-body">
+                            <h5 class="card-title mb-0">نظر خود را بنویسید</h5>
+
+                            {% if request.user.is_authenticated %}
+                                <form class="mt-4 pt-2" method="post">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="body">نظر شما</label>
+                                                <textarea id="body" name="body" placeholder="نظر شما" rows="5"
+                                                          class="form-control" required></textarea>
+                                            </div>
+                                        </div>
+                                        <!--end col-->
+
+                                        <div class="col-md-12">
+                                            <div class="send d-grid">
+                                                <button type="submit" class="btn btn-primary">ارسال نظر</button>
+                                            </div>
+                                        </div>
+                                        <!--end col-->
+                                    </div>
+                                    <!--end row-->
+                                </form>
+                            {% else %}
+                                <a href="{% url 'login' %}" class="btn btn-primary mt-4">برای ارسال نظر ابتدا باید وارد
+                                    شوید</a>
+                            {% endif %}
+                            <!--end form-->
+                        </div>
+                    </div>
+
+                    <div class="card shadow rounded border-0 mt-5">
+                        <div class="card-body">
+                            <h5 class="card-title mb-0">مرتبط :</h5>
+
+                            <div class="row">
+                                {% for article in related_articles %}
+                                    <div class="col-lg-6 mt-4 pt-2">
+                                        <div class="card border-0 bg-white shadow rounded blog blog-primary overflow-hidden">
+                                            {% if article.image %}
+                                                <img src="{{ article.image.url }}" class="img-fluid" alt="{{ article.title|truncatewords:5 }}">
+                                            {% else %}
+                                                <img src="{% static 'main/images/image_not_available.jpg' %}" class="img-fluid" alt="{{ article.title|truncatewords:5 }}">
+                                            {% endif %}
+                                            <div class="card-body">
+                                                <ul class="list-unstyled d-flex align-items-center justify-content-between">
+                                                    <li>
+                                                        {% for category in article.category.all %}
+                                                            <a href="{% url 'blog:category_article' category.slug %}" class="badge bg-soft rounded-pill">{{ category.title }}</a>
+                                                        {% endfor %}
+                                                    </li>
+
+                                                    <li>
+                                                        <span class="text-muted">{{ article.created_at|to_jalali:'%Y/%m/%d' }}</span>
+                                                    </li>
+                                                </ul>
+
+                                                <a href="{{ article.get_absolute_url }}" class="text-dark h5 title">{{ article.title|truncatewords:5 }}</a>
+
+                                                <a href="{{ article.get_absolute_url }}" class="read-more d-block mt-3">بیشتر
+                                                    بخوانید <i class="uil uil-arrow-left align-middle"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <!--end col-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end col-->
+            </div>
+            <!--end row-->
+        </div>
+        <!--end container-->
+    </section>
+    <!--end section-->
+    <!-- End Hero -->
+{% endblock %}

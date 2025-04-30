@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     'jalali_date',
     'ckeditor',
+    'django_cleanup.apps.CleanupConfig',
 ]
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
@@ -97,6 +98,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'context_processors.context_processors.core_func',
+                'context_processors.context_processors.blog_func',
             ],
         },
     },

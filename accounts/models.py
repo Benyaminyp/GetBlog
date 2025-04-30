@@ -69,10 +69,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 
 class Profile(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE ,verbose_name="کاربر")
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE ,verbose_name="کاربر")
     first_name = models.CharField(max_length=250 , verbose_name='نام')
     last_name = models.CharField(max_length=250, verbose_name='نام خانوادگی')
-    image = models.ImageField(blank=True, null=True, verbose_name='عکس')
+    image = models.ImageField(upload_to='profile/', blank=True, null=True, verbose_name='عکس')
     bio = models.TextField(verbose_name='توضیحات',blank=True, null=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
