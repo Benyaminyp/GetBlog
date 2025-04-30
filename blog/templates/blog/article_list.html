@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% block title %}مقالات GetBlog{% endblock %}
+{% load static %}
+{% load jalali_tags %}
+
+{% block content %}
+    <!-- Start -->
+    <section class="bg-half-100 d-table w-100 bg-light">
+        <div class="container">
+            <div class="row mt-5 justify-content-center">
+                <div class="col-lg-8 col-md-6">
+                    <div class="title-heading text-center">
+                        <h2 class="mb-0 heading page-heading">مقالات GetBlog</h2>
+                    </div>
+                </div>
+                <!--end col-->
+            </div>
+            <!--end row-->
+        </div>
+        <!--end container-->
+    </section>
+    <!--end section-->
+    <!-- End -->
+
+    <section class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-6">
+                    <div class="row">
+                        {% if articles %}
+                            {% for article in articles %}
+                                <div class="col-lg-6 mt-4 pt-2">
+                                    <div class="card border-0 bg-white shadow rounded blog blog-primary overflow-hidden">
+                                        {% if article.image %}
+                                            <img src="{{ article.image.url }}" class="img-fluid"
+                                                 alt="{{ article.title|truncatewords:5 }}">
+                                        {% else %}
+                                            <img src="{% static 'main/images/image_not_available.jpg' %}"
+                                                 class="img-fluid"
+                                                 alt="{{ article.title|truncatewords:5 }}">
+                                        {% endif %}
+                                        <div class="card-body">
+                                            <ul class="list-unstyled d-flex align-items-center justify-content-between">
+                                                <li>
+                                                    {% for category in article.category.all %}
+                                                        <a href="{% url 'blog:category_article' category.slug %}"
+                                                           class="badge bg-soft rounded-pill">{{ category.title }}</a>
+                                                    {% endfor %}
+                                                </li>
+
+                                                <li>
+                                                    <span class="text-muted">{{ article.created_at|to_jalali:'%Y/%m/%d' }}</span>
+                                                </li>
+                                            </ul>
+
+                                            <a href="{{ article.get_absolute_url }}"
+                                               class="text-dark h5 title">{{ article.title|truncatewords:5 }}</a>
+
+                                            <a href="{{ article.get_absolute_url }}" class="read-more d-block mt-3">بیشتر
+                                                بخوانید
+                                                <i
+                                                        class="uil uil-arrow-left align-middle"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="col-lg-6 mt-4 pt-2">
+                                مقاله ای وجود ندارد!
+                            </div>
+                        {% endif %}
+                        <!--end col-->
+                    </div>
+                    <!--end row-->
+
+                    <div class="row mt-4 pt-2">
+                        <div class="col-12">
+                            {% if articles.has_other_pages %}
+                                <ul class="pagination justify-content-center mb-0">
+                                    {% if articles.has_previous %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ articles.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}"
+                                               aria-label="Previous">
+                                            <span aria-hidden="true"><i
+                                                    class="mdi mdi-chevron-left mdi-18px"></i></span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% for page in pages_to_show %}
+                                        {% if page == '...' %}
+                                            <li class="page-item"><a class="page-link">...</a></li>
+                                        {% elif articles.number == page %}
+                                            <li class="page-item"><a class="page-link active"
+                                                                     href="?page={{ page }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">{{ page }}</a></li>
+                                        {% else %}
+                                            <li class="page-item"><a class="page-link"
+                                                                     href="?page={{ page }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">{{ page }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if articles.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ articles.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}"
+                                               aria-label="Next">
+                                                <span aria-hidden="true"><i
+                                                        class="mdi mdi-chevron-right mdi-18px"></i></span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                        <!--end col-->
+                    </div>
+                    <!--end row-->
+                </div>
+                <!--end col-->
+
+                <!-- Sidebar -->
+                {% include 'includes/sidebar.html' %}
+
+            </div>
+            <!--end row-->
+        </div>
+        <!--end container-->
+    </section>
+    <!--end section-->
+{% endblock %}
