@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% block title %}
+    {% if author.first_name and author.last_name %}
+        مقالات {{ author.first_name }} {{ author.last_name }}
+    {% else %}
+        مقالات {{ author.user.email }}
+    {% endif %}
+{% endblock %}
+{% load static %}
+{% load jalali_tags %}
+
+{% block content %}
+    <!-- Start -->
+    <section class="bg-half-170 pb-0 d-table w-100">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-9">
+                    <div class="d-md-flex align-items-center border-bottom pb-5">
+                        {% if author.image %}
+                            <img src="{{ author.image.url }}" class="img-fluid rounded-circle shadow-md avatar avatar-medium d-block mx-auto" alt="">
+                        {% else %}
+                            <img src="{% static 'main/images/profile.png' %}" class="img-fluid rounded-circle shadow-md avatar avatar-medium d-block mx-auto" alt="">
+                        {% endif %}
+
+                        <div class="section-title flex-grow-1 me-md-4 mt-4 mt-sm-0 text-md-end text-center">
+                            {% if author.first_name and author.last_name %}
+                                <h4 class="title mb-0">{{ author.first_name }} {{ author.last_name }}</h4>
+                            {% else %}
+                                <h4 class="title mb-0">{{ author.user.email }}</h4>
+                            {% endif %}
+                            <small class="fw-medium text-muted text-uppercase">نویسنده محتوا</small>
+
+                            {% if author.bio %}
+                                <p class="text-muted mt-4">{{ author.bio }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end row-->
+        </div>
+        <!--end container-->
+    </section>
+    <!--end section-->
+    <!-- End -->
+
+    <section class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-6">
+                    <div class="row">
+                        {% if articles %}
+                            {% for article in articles %}
+                                <div class="col-lg-6 mt-4 pt-2">
+                                    <div class="card border-0 bg-white shadow rounded blog blog-primary overflow-hidden">
+                                        {% if article.image %}
+                                            <img src="{{ article.image.url }}" class="img-fluid"
+                                                 alt="{{ article.title|truncatewords:5 }}">
+                                        {% else %}
+                                            <img src="{% static 'main/images/image_not_available.jpg' %}" class="img-fluid" alt="{{ article.title|truncatewords:5 }}">
+                                        {% endif %}
+                                        <div class="card-body">
+                                            <ul class="list-unstyled d-flex align-items-center justify-content-between">
+                                                <li>
+                                                    {% for category in article.category.all %}
+                                                        <a href="{% url 'blog:category_article' category.slug %}" class="badge bg-soft rounded-pill">{{ category.title }}</a>
+                                                    {% endfor %}
+                                                </li>
+
+                                                <li>
+                                                    <span class="text-muted">{{ article.created_at|to_jalali:'%Y/%m/%d' }}</span>
+                                                </li>
+                                            </ul>
+
+                                            <a href="{{ article.get_absolute_url }}" class="text-dark h5 title">{{ article.title|truncatewords:5 }}</a>
+
+                                            <a href="{{ article.get_absolute_url }}" class="read-more d-block mt-3">بیشتر
+                                                بخوانید
+                                                <i class="uil uil-arrow-left align-middle"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="col-lg-6 mt-4 pt-2">
+                                مقاله ای وجود ندارد!
+                            </div>
+                        {% endif %}
+                        <!--end col-->
+                    </div>
+                    <!--end row-->
+
+                    <div class="row mt-4 pt-2">
+                        <div class="col-12">
+                            {% if articles.has_other_pages %}
+                                <ul class="pagination justify-content-center mb-0">
+                                    {% if articles.has_previous %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ articles.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}"aria-label="Previous">
+                                            <span aria-hidden="true"><i class="mdi mdi-chevron-left mdi-18px"></i></span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% for page in pages_to_show %}
+                                        {% if page == '...' %}
+                                            <li class="page-item"><a class="page-link">...</a></li>
+                                        {% elif articles.number == page %}
+                                            <li class="page-item"><a class="page-link active" href="?page={{ page }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">{{ page }}</a></li>
+                                        {% else %}
+                                            <li class="page-item"><a class="page-link" href="?page={{ page }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">{{ page }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if articles.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ articles.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}" aria-label="Next">
+                                                <span aria-hidden="true"><i class="mdi mdi-chevron-right mdi-18px"></i></span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                        <!--end col-->
+                    </div>
+                    <!--end row-->
+                </div>
+                <!--end col-->
+
+                <!-- Sidebar -->
+                {% include 'includes/sidebar.html' %}
+
+            </div>
+            <!--end row-->
+        </div>
+        <!--end container-->
+    </section>
+    <!--end section-->
+{% endblock %}
