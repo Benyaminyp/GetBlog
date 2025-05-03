@@ -21,6 +21,7 @@
     <!-- Main Css -->
     <link href="{% static 'main/css/style.min.css' %}" rel="stylesheet" type="text/css" id="theme-opt" />
     <link href="{% static 'accounts/css/auth-style.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'dashboard/css/dashboard.css' %}" rel="stylesheet" type="text/css" />
     <!--Font Awesome-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
@@ -69,7 +70,7 @@
 
                 {% if user.is_authenticated %}
                 <li class="list-inline-item ms-2">
-                    <a href="author.html">
+                    <a href="{% url "dashboard:user_dashboard" %}">
                         {% if request.user.profile.image %}
                             <img src="{{ request.user.profile.image.url }}" class="rounded-pill avatar avatar-sm-sm" alt="{{ request.user.email }}">
                         {% else %} 
@@ -233,6 +234,7 @@
     <!--Note: All init js like tiny slider, counter, lightbox, gallery etc.-->
     <script src="{% static 'main/js/app.js' %}"></script>
     <script src="{% static 'accounts/js/auth.js' %}"></script>
+    <script src="{% static 'dashboard/js/dashboard.js' %}"></script>
 
     <!--Note: All important javascript like page loader, menu, sticky menu, menu-toggler, one page menu etc. -->
 </body>

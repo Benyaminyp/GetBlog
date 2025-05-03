@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block title %} داشبورد {% endblock title %}
+
+{% block content %}
+
+  <!-- محتوای داشبورد -->
+  <div class="dashboard-wrapper">
+    <div class="container">
+        <div class="row">
+            {% include "includes/dashboard_sidebar.html" %}
+            
+            <!-- محتوای اصلی -->
+            <div class="col-lg-9">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">خلاصه فعالیت‌ها</h4>
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card stat-card bg-primary text-white">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="icon">
+                                                <i class="ti ti-file-text"></i>
+                                            </div>
+                                            <div class="ms-3">
+                                                <h5 class="mb-0">25</h5>
+                                                <p class="mb-0">مقالات</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="card stat-card bg-success text-white">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="icon">
+                                                <i class="ti ti-eye"></i>
+                                            </div>
+                                            <div class="ms-3">
+                                                <h5 class="mb-0">1,245</h5>
+                                                <p class="mb-0">بازدید</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="card stat-card bg-warning text-white">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="icon">
+                                                <i class="ti ti-message-circle"></i>
+                                            </div>
+                                            <div class="ms-3">
+                                                <h5 class="mb-0">42</h5>
+                                                <p class="mb-0">نظرات</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <h5 class="mb-3">آخرین مقالات</h5>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>عنوان</th>
+                                            <th>تاریخ</th>
+                                            <th>بازدید</th>
+                                            <th>وضعیت</th>
+                                            <th>عملیات</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>بیایید همکاری کنیم</td>
+                                            <td>1401/05/06</td>
+                                            <td>245</td>
+                                            <td><span class="badge bg-success">منتشر شده</span></td>
+                                            <td>
+                                                <a href="#" class="btn btn-sm btn-primary">ویرایش</a>
+                                                <a href="#" class="btn btn-sm btn-danger">حذف</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>بازاریابی موبایلی</td>
+                                            <td>1401/04/15</td>
+                                            <td>189</td>
+                                            <td><span class="badge bg-success">منتشر شده</span></td>
+                                            <td>
+                                                <a href="#" class="btn btn-sm btn-primary">ویرایش</a>
+                                                <a href="#" class="btn btn-sm btn-danger">حذف</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>استراتژی خود را تغییر دهید</td>
+                                            <td>1401/03/28</td>
+                                            <td>76</td>
+                                            <td><span class="badge bg-warning">پیش‌نویس</span></td>
+                                            <td>
+                                                <a href="#" class="btn btn-sm btn-primary">ویرایش</a>
+                                                <a href="#" class="btn btn-sm btn-danger">حذف</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
