@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load jalali_tags %}
+
 {% block title %} داشبورد {% endblock title %}
 
 {% block content %}
@@ -24,7 +26,7 @@
                                                 <i class="ti ti-file-text"></i>
                                             </div>
                                             <div class="ms-3">
-                                                <h5 class="mb-0">25</h5>
+                                                <h5 class="mb-0">{{ total_articles }}</h5>
                                                 <p class="mb-0">مقالات</p>
                                             </div>
                                         </div>
@@ -40,7 +42,7 @@
                                                 <i class="ti ti-eye"></i>
                                             </div>
                                             <div class="ms-3">
-                                                <h5 class="mb-0">1,245</h5>
+                                                <h5 class="mb-0">{{ total_views }}</h5>
                                                 <p class="mb-0">بازدید</p>
                                             </div>
                                         </div>
@@ -56,7 +58,7 @@
                                                 <i class="ti ti-message-circle"></i>
                                             </div>
                                             <div class="ms-3">
-                                                <h5 class="mb-0">42</h5>
+                                                <h5 class="mb-0">{{ total_comments }}</h5>
                                                 <p class="mb-0">نظرات</p>
                                             </div>
                                         </div>
@@ -79,36 +81,28 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for user_article in user_articles %}
+
                                         <tr>
-                                            <td>بیایید همکاری کنیم</td>
-                                            <td>1401/05/06</td>
-                                            <td>245</td>
+                                            <td>{{ user_article.title }}</td>
+                                            <td>{{ user_article.created_at|to_jalali:'%Y/%m/%d' }}</td>
+                                            <td>{{ user_article.views }}</td>
+
+                                            {% if user_article.status %}
                                             <td><span class="badge bg-success">منتشر شده</span></td>
+                                            {% else %}
+                                            <td><span class="badge bg-warning">در حال بررسی</span></td>
+                                            {% endif %}
+
                                             <td>
-                                                <a href="#" class="btn btn-sm btn-primary">ویرایش</a>
-                                                <a href="#" class="btn btn-sm btn-danger">حذف</a>
+                                                <a href="{% url "dashboard:article_edit" user_article.slug %}" class="btn btn-sm btn-primary">ویرایش</a>
+                                                <a href="#" data-slug="{{ user_article.slug }}" class="btn btn-sm btn-danger delete-btn">حذف</a>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>بازاریابی موبایلی</td>
-                                            <td>1401/04/15</td>
-                                            <td>189</td>
-                                            <td><span class="badge bg-success">منتشر شده</span></td>
-                                            <td>
-                                                <a href="#" class="btn btn-sm btn-primary">ویرایش</a>
-                                                <a href="#" class="btn btn-sm btn-danger">حذف</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>استراتژی خود را تغییر دهید</td>
-                                            <td>1401/03/28</td>
-                                            <td>76</td>
-                                            <td><span class="badge bg-warning">پیش‌نویس</span></td>
-                                            <td>
-                                                <a href="#" class="btn btn-sm btn-primary">ویرایش</a>
-                                                <a href="#" class="btn btn-sm btn-danger">حذف</a>
-                                            </td>
-                                        </tr>
+
+                                        {% endfor %}
+
+
                                     </tbody>
                                 </table>
                             </div>
@@ -121,4 +115,53 @@
 </div>
 
 
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">آیا مطمئن هستید؟</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                آیا مطمئن هستید که می‌خواهید این مقاله را حذف کنید؟
+            </div>
+            <div class="modal-footer">
+                <form id="delete-form" method="POST" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">لغو</button>
+                    <button type="submit" class="btn btn-danger">حذف</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+
+$(document).ready(function() {
+    $('.delete-btn').on('click', function(event) {
+        event.preventDefault();
+
+        var slug = $(this).data('slug');
+        var deleteUrl = "{% url 'dashboard:article_delete' 'slug_placeholder' %}".replace('slug_placeholder', slug); 
+        $('#delete-form').attr('action', deleteUrl);
+
+        $('#deleteModal').modal('show');
+    });
+
+    $('#delete-form').on('submit', function(event) {
+        event.preventDefault(); // جلوگیری از ارسال معمولی فرم
+
+        var form = $(this);
+        // ارسال فرم به‌طور معمولی (صفحه رفرش خواهد شد)
+        form[0].submit();
+    });
+});
+
+
+</script>
 {% endblock content %}
