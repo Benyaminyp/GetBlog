@@ -5,7 +5,6 @@
         <div class="card-body">
             <div class="user-profile text-center mb-4">
                 {% if user.profile.image %}
-                {% comment %} <img src="{{ user.profile.image.url }}" class="rounded-circle avatar-md" alt=""> {% endcomment %}
                 <img src="{{ request.user.profile.image.url }}" class="rounded-pill avatar avatar-sm-sm" alt="{{ request.user.email }}">
 
                 {% else %}

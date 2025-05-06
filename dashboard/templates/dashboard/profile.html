@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load jalali_tags %}
 {% block title %}پروفایل کاربر{% endblock title %}
 
 {% block content %}
@@ -23,10 +23,9 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="profile-image text-center">
-                                    <img src="../images/users/user-3.jpg" class="rounded-circle avatar-xxl" alt="">
-                                    <div class="mt-3">
-                                        <button class="btn btn-sm btn-outline-primary">تغییر تصویر</button>
-                                    </div>
+                                    {% if request.user.profile.image %}
+                                    <img src="{{ request.user.profile.image.url }}" class="rounded-pill avatar avatar-sm-sm" alt="{{ request.user.email }}">
+                                    {% endif %}
                                 </div>
                             </div>
                             
@@ -37,22 +36,16 @@
                                         <hr>
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <p><strong>نام کامل:</strong> جان دو</p>
+                                                <p><strong>نام:</strong> {{ profile.first_name }}</p>
                                             </div>
                                             <div class="col-md-6">
-                                                <p><strong>نام کاربری:</strong> johndoe</p>
+                                                <p><strong>نام خانوادگی:</strong> {{ profile.last_name }} </p>
                                             </div>
                                             <div class="col-md-6">
-                                                <p><strong>ایمیل:</strong> john@example.com</p>
+                                                <p><strong>ایمیل:</strong> {{ request.user.email }} </p>
                                             </div>
                                             <div class="col-md-6">
-                                                <p><strong>تلفن:</strong> 09123456789</p>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p><strong>تاریخ عضویت:</strong> 1400/01/15</p>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p><strong>آخرین ورود:</strong> 1401/05/10 - 14:30</p>
+                                                <p><strong>تاریخ آخرین ورود: </strong> {{ user.last_login|to_jalali:'%Y/%m/%d' }} </p>
                                             </div>
                                         </div>
                                     </div>
@@ -60,14 +53,9 @@
                                     <div class="mb-3">
                                         <h5>درباره من</h5>
                                         <hr>
-                                        <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد.</p>
+                                        <p>{{ profile.bio }}</p>
                                     </div>
-                                    
-                                    <div class="mb-3">
-                                        <h5>آدرس</h5>
-                                        <hr>
-                                        <p>تهران، خیابان آزادی، کوچه شهید احمدی، پلاک ۱۲، طبقه ۳</p>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>

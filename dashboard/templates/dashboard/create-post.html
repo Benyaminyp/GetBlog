@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 
 {% block title %} مقاله جدید{% endblock title %}
 {% block content %}
@@ -16,10 +17,13 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h4 class="card-title mb-0">مقاله جدید</h4>
-                            <a href="{% url "core:home" %}" class="btn btn-outline-secondary">بازگشت</a>
+                            <a href="{% url "dashboard:user_dashboard" %}" class="btn btn-outline-secondary">بازگشت</a>
                         </div>
                         
-                        <form>
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+{% comment %} 
                             <div class="mb-3">
                                 <label for="post-title" class="form-label">عنوان مقاله</label>
                                 <input type="text" class="form-control" id="post-title" placeholder="عنوان مقاله را وارد کنید">
@@ -43,6 +47,7 @@
                                         </select>
                                     </div>
                                 </div>
+
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="post-tags" class="form-label">تگ‌ها</label>
@@ -58,38 +63,11 @@
                                         <input class="form-control" type="file" id="post-image">
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="post-status" class="form-label">وضعیت</label>
-                                        <select class="form-select" id="post-status">
-                                            <option value="draft">پیش‌نویس</option>
-                                            <option value="publish" selected>منتشر شده</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
+                            </div> {% endcomment %}
                             
-                            <div class="mb-3">
-                                <label class="form-label">سئو</label>
-                                <div class="card bg-light p-3">
-                                    <div class="mb-3">
-                                        <label for="meta-title" class="form-label">عنوان متا</label>
-                                        <input type="text" class="form-control" id="meta-title" placeholder="عنوان متا را وارد کنید">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="meta-description" class="form-label">توضیحات متا</label>
-                                        <textarea class="form-control" id="meta-description" rows="3" placeholder="توضیحات متا را وارد کنید"></textarea>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="meta-keywords" class="form-label">کلمات کلیدی</label>
-                                        <input type="text" class="form-control" id="meta-keywords" placeholder="کلمات کلیدی را با کاما جدا کنید">
-                                    </div>
-                                </div>
-                            </div>
                             
                             <div class="text-end">
                                 <button type="submit" class="btn btn-primary">ذخیره مقاله</button>
-                                <button type="button" class="btn btn-outline-secondary">پیش‌نمایش</button>
                             </div>
                         </form>
                     </div>
