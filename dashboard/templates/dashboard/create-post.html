@@ -20,52 +20,10 @@
                             <a href="{% url "dashboard:user_dashboard" %}" class="btn btn-outline-secondary">بازگشت</a>
                         </div>
                         
-                        <form method="post">
+                        <form method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             {{ form|crispy }}
-{% comment %} 
-                            <div class="mb-3">
-                                <label for="post-title" class="form-label">عنوان مقاله</label>
-                                <input type="text" class="form-control" id="post-title" placeholder="عنوان مقاله را وارد کنید">
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="post-content" class="form-label">محتوای مقاله</label>
-                                <textarea class="form-control" id="post-content" rows="10" placeholder="محتوای مقاله را وارد کنید"></textarea>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="post-category" class="form-label">دسته‌بندی</label>
-                                        <select class="form-select" id="post-category">
-                                            <option selected>انتخاب دسته‌بندی</option>
-                                            <option value="1">کسب و کار</option>
-                                            <option value="2">فروشگاه آنلاین</option>
-                                            <option value="3">تجارت</option>
-                                            <option value="4">پرطرفدار</option>
-                                        </select>
-                                    </div>
-                                </div>
 
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="post-tags" class="form-label">تگ‌ها</label>
-                                        <input type="text" class="form-control" id="post-tags" placeholder="تگ‌ها را با کاما جدا کنید">
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="post-image" class="form-label">تصویر شاخص</label>
-                                        <input class="form-control" type="file" id="post-image">
-                                    </div>
-                                </div>
-                            </div> {% endcomment %}
-                            
-                            
                             <div class="text-end">
                                 <button type="submit" class="btn btn-primary">ذخیره مقاله</button>
                             </div>

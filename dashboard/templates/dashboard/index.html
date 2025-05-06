@@ -158,27 +158,29 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-
-$(document).ready(function() {
-    $('.delete-btn').on('click', function(event) {
-        event.preventDefault();
-
-        var slug = $(this).data('slug');
-        var deleteUrl = "{% url 'dashboard:article_delete' 'slug_placeholder' %}".replace('slug_placeholder', slug); 
-        $('#delete-form').attr('action', deleteUrl);
-
-        $('#deleteModal').modal('show');
+    $(document).ready(function() {
+        $('.delete-btn').on('click', function(event) {
+            event.preventDefault();
+    
+            var slug = $(this).data('slug');
+            var deleteUrl = "{% url 'dashboard:article_delete' 'slug_placeholder' %}".replace('slug_placeholder', slug);
+            $('#delete-form').attr('action', deleteUrl);
+    
+            $('#deleteModal').modal('show');
+        });
+    
+        $('#delete-form').on('submit', function(event) {
+            event.preventDefault(); 
+            var form = $(this);
+            form[0].submit();
+        });
+    
+        setTimeout(function () {
+            $(".alert").fadeOut("slow", function () {
+                $(this).remove();
+            });
+        }, 3000);
     });
-
-    $('#delete-form').on('submit', function(event) {
-        event.preventDefault(); // جلوگیری از ارسال معمولی فرم
-
-        var form = $(this);
-        // ارسال فرم به‌طور معمولی (صفحه رفرش خواهد شد)
-        form[0].submit();
-    });
-});
-
-
+    
 </script>
 {% endblock content %}
