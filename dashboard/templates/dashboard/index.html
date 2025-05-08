@@ -91,36 +91,20 @@
                                             <th>عملیات</th>
                                         </tr>
                                     </thead>
-                                    <tbody>        
-                                        {% for user_article in user_articles %}
-
-                                        <tr>
-                                            <td>{{ user_article.title }}</td>
-                                            <td>{{ user_article.created_at|to_jalali:'%Y/%m/%d' }}</td>
-                                            <td>{{ user_article.views }}</td>
-
-                                            {% if user_article.status %}
-                                            <td><span class="badge bg-success">منتشر شده</span></td>
-                                            {% else %}
-                                            <td><span class="badge bg-warning">در حال بررسی</span></td>
-                                            {% endif %}
-
-                                            <td>
-                                                <a href="{% url "dashboard:article_edit" user_article.slug %}" class="btn btn-sm btn-primary">ویرایش</a>
-                                                <a href="#" data-slug="{{ user_article.slug }}" class="btn btn-sm btn-danger delete-btn">حذف</a>
-                                            </td>
-                                        </tr>
-                                        {% empty %}
-                                        <tr>
-                                            <td colspan="5" class="text-center text-muted py-4">
-                                                <i class="bi bi-exclamation-circle fs-4 d-block mb-2"></i>
-                                                <span>هنوز هیچ مقاله‌ای ثبت نکرده‌اید.</span>
-                                            </td>
-                                        </tr>
-                                        {% endfor %}
-
-
+                                    <tbody id="article-list">  
+                                        {% include "dashboard/partials/article_row.html" with user_articles=page_obj %}
                                     </tbody>
+
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="5" class="text-center">
+                                                {% if page_obj.has_next %}
+                                                    <button id="load-more" data-page="{{ page_obj.next_page_number }}" class="btn btn-outline-primary">بارگذاری بیشتر</button>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+
                                 </table>
                             </div>
                         </div>
@@ -155,32 +139,59 @@
 </div>
 
 
+
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 <script>
     $(document).ready(function() {
-        $('.delete-btn').on('click', function(event) {
+        $(document).on('click', '.delete-btn', function(event) {
             event.preventDefault();
-    
             var slug = $(this).data('slug');
             var deleteUrl = "{% url 'dashboard:article_delete' 'slug_placeholder' %}".replace('slug_placeholder', slug);
             $('#delete-form').attr('action', deleteUrl);
-    
             $('#deleteModal').modal('show');
         });
-    
+
         $('#delete-form').on('submit', function(event) {
-            event.preventDefault(); 
-            var form = $(this);
-            form[0].submit();
+            event.preventDefault();
+            this.submit();
         });
-    
+
         setTimeout(function () {
             $(".alert").fadeOut("slow", function () {
                 $(this).remove();
             });
         }, 3000);
+
+        $(document).on('click', '#load-more', function() {
+            var button = $(this);
+            var page = button.data('page');
+
+            $.ajax({
+                url: "/dashboard/load-more-articles/",
+                data: { page: page },
+                type: "GET",
+                dataType: "json",
+                beforeSend: function() {
+                    button.prop("disabled", true).text("در حال بارگذاری...");
+                },
+                success: function(response) {
+                    $('#article-list').append(response.html);
+                    if (response.has_next) {
+                        button.data('page', page + 1).prop("disabled", false).text("بارگذاری بیشتر");
+                    } else {
+                        button.remove();
+                    }
+                },
+                error: function() {
+                    button.prop("disabled", false).text("خطا در بارگذاری");
+                }
+            });
+        });
     });
-    
 </script>
+
+
 {% endblock content %}

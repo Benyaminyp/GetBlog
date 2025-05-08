@@ -1,7 +1,10 @@
-from django.shortcuts import get_object_or_404, redirect, render
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
+from django.core.paginator import Paginator , EmptyPage
 from django.urls import reverse_lazy
 from django.contrib.auth import update_session_auth_hash
+from django.template.loader import render_to_string
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from accounts.models import Profile
@@ -32,12 +35,33 @@ class UserDashboardView(LoginRequiredMixin , generic.TemplateView):
         total_views = user_articles.aggregate(Sum("views"))["views__sum"] or 0
         total_comments = Comment.objects.filter(article__author=profile).count()
         
+        # paginate articles
+        paginator = Paginator(user_articles, 3)
+        page_obj = paginator.get_page(1)
+        
         context["total_articles"] = total_articles
         context["total_views"] = total_views
         context["total_comments"] = total_comments
         context["user_articles"] = user_articles
-        
+        context["page_obj"] = page_obj
         return context
+    
+class LoadMoreArticlesView(LoginRequiredMixin, generic.View):
+    def get(self, request, *args, **kwargs):
+        page = request.GET.get("page", 1)
+        profile = request.user.profile
+        user_articles = Article.objects.filter(author=profile)
+        paginator = Paginator(user_articles, 3)
+        page_obj = paginator.get_page(page)
+
+        html = render_to_string("dashboard/partials/article_row.html", {
+            "user_articles": page_obj.object_list
+        }, request=request)
+
+        return JsonResponse({
+            "html": html,
+            "has_next": page_obj.has_next()
+        })     
         
 class ArticleUpdateView(LoginRequiredMixin, generic.UpdateView):
     """

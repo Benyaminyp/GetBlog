@@ -1,0 +1,17 @@
+{% load jalali_tags %}
+{% for user_article in user_articles %}
+<tr>
+    <td>{{ user_article.title }}</td>
+    <td>{{ user_article.created_at|to_jalali:'%Y/%m/%d' }}</td>
+    <td>{{ user_article.views }}</td>
+    {% if user_article.status %}
+        <td><span class="badge bg-success">منتشر شده</span></td>
+    {% else %}
+        <td><span class="badge bg-warning">در حال بررسی</span></td>
+    {% endif %}
+    <td>
+        <a href="{% url "dashboard:article_edit" user_article.slug %}" class="btn btn-sm btn-primary">ویرایش</a>
+        <a href="#" data-slug="{{ user_article.slug }}" class="btn btn-sm btn-danger delete-btn">حذف</a>
+    </td>
+</tr>
+{% endfor %}
