@@ -36,7 +36,7 @@ class UserDashboardView(LoginRequiredMixin , generic.TemplateView):
         total_comments = Comment.objects.filter(author=profile).count()
         
         # paginate articles
-        paginator = Paginator(user_articles, 4)
+        paginator = Paginator(user_articles, 5)
         page_obj = paginator.get_page(1)
         
         context["total_articles"] = total_articles
@@ -51,7 +51,7 @@ class LoadMoreArticlesView(LoginRequiredMixin, generic.View):
         page = request.GET.get("page", 1)
         profile = request.user.profile
         user_articles = Article.objects.filter(author=profile).order_by("-updated_at","-created_at")
-        paginator = Paginator(user_articles, 4)
+        paginator = Paginator(user_articles, 5)
         page_obj = paginator.get_page(page)
 
         html = render_to_string("dashboard/partials/article_row.html", {
