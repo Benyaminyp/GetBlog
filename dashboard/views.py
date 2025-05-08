@@ -28,15 +28,15 @@ class UserDashboardView(LoginRequiredMixin , generic.TemplateView):
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
         profile = self.request.user.profile
-        user_articles = Article.objects.filter(author=profile)
+        user_articles = Article.objects.filter(author=profile).order_by("-updated_at","-created_at")
         
         total_articles = user_articles.count()
         
         total_views = user_articles.aggregate(Sum("views"))["views__sum"] or 0
-        total_comments = Comment.objects.filter(article__author=profile).count()
+        total_comments = Comment.objects.filter(author=profile).count()
         
         # paginate articles
-        paginator = Paginator(user_articles, 3)
+        paginator = Paginator(user_articles, 4)
         page_obj = paginator.get_page(1)
         
         context["total_articles"] = total_articles
@@ -50,8 +50,8 @@ class LoadMoreArticlesView(LoginRequiredMixin, generic.View):
     def get(self, request, *args, **kwargs):
         page = request.GET.get("page", 1)
         profile = request.user.profile
-        user_articles = Article.objects.filter(author=profile)
-        paginator = Paginator(user_articles, 3)
+        user_articles = Article.objects.filter(author=profile).order_by("-updated_at","-created_at")
+        paginator = Paginator(user_articles, 4)
         page_obj = paginator.get_page(page)
 
         html = render_to_string("dashboard/partials/article_row.html", {
