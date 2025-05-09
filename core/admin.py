@@ -3,6 +3,10 @@ from . import models
 from jalali_date import datetime2jalali, date2jalali
 from jalali_date.admin import ModelAdminJalaliMixin
 
+admin.site.site_header = "پنل ادمین getblog"
+admin.site.site_title = "پنل ادمین getblog"
+admin.site.site_title = "پنل ادمین getblog"
+admin.site.index_title = "پنل ادمین"
 
 @admin.register(models.SiteSettings)
 class SiteSettingsAdmin(admin.ModelAdmin):

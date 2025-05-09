@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load jalali_tags %}
+{% block title %}پروفایل کاربر{% endblock title %}
+
+{% block content %}
+
+ <!-- محتوای پروفایل -->
+ <div class="dashboard-wrapper">
+    <div class="container">
+        <div class="row">
+            {% include "includes/dashboard_sidebar.html" %}
+            
+            
+            <!-- محتوای اصلی -->
+            <div class="col-lg-9">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="card-title mb-0">پروفایل کاربری</h4>
+                            <a href="{% url "dashboard:profile_edit" %}" class="btn btn-primary">ویرایش پروفایل</a>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="profile-image text-center">
+                                    {% if request.user.profile.image %}
+                                    <img src="{{ request.user.profile.image.url }}" class="rounded-pill avatar avatar-sm-sm" alt="{{ request.user.email }}">
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-8">
+                                <div class="profile-info">
+                                    <div class="mb-3">
+                                        <h5>اطلاعات شخصی</h5>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p><strong>نام:</strong> {{ profile.first_name }}</p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p><strong>نام خانوادگی:</strong> {{ profile.last_name }} </p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p><strong>ایمیل:</strong> {{ request.user.email }} </p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p><strong>تاریخ آخرین ورود: </strong> {{ user.last_login|to_jalali:'%Y/%m/%d' }} </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <h5>درباره من</h5>
+                                        <hr>
+                                        <p>{{ profile.bio }}</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
