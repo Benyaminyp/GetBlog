@@ -47,6 +47,12 @@ class UserDashboardView(LoginRequiredMixin , generic.TemplateView):
         return context
     
 class LoadMoreArticlesView(LoginRequiredMixin, generic.View):
+    """
+    Loads more articles authored by the logged-in user via AJAX.
+    Returns paginated article rows as HTML.
+    Used for infinite scroll or "Load More" button.
+    
+    """
     def get(self, request, *args, **kwargs):
         page = request.GET.get("page", 1)
         profile = request.user.profile
@@ -172,3 +178,8 @@ class UserProfileUpdateView(LoginRequiredMixin, generic.UpdateView):
         context['form'] = profile_form
         context['user_form'] = user_form
         return self.render_to_response(context)
+    
+    def form_valid(self, form):
+        form.instance.author = self.request.user.profile   
+        messages.success(self.request, "مقاله با موفقیت ویرایش شد.") 
+        return super().form_valid(form)
