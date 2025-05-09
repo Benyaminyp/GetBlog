@@ -1,13 +1,10 @@
-
-
-````markdown
 # GetBlog
 
 **GetBlog** is a simple and functional blog application built with the Django framework. It supports user authentication, blog post management, category filtering, and includes a fully-featured admin panel.
 
 ## Features
 
-- User registration, login, and logout , password reset
+- User registration, login, and logout
 - Create, edit, and delete blog posts
 - Categorize posts by topic
 - Admin panel using Django's built-in admin
@@ -27,7 +24,8 @@
    ```bash
    git clone https://github.com/Mohammadparsa1384/GetBlog.git
    cd GetBlog
-````
+ GetBlog
+
 
 2. **Create and activate a virtual environment**:
 
