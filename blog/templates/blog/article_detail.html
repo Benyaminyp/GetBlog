@@ -4,6 +4,18 @@
 {% load jalali_tags %}
 
 {% block content %}
+
+{% if messages %}
+<div class="messages">
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+      {{ message }}
+      
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
+
     <!-- Start Hero -->
     <section class="bg-half-170">
         <div class="container">
@@ -92,11 +104,9 @@
                                                         <small class="text-muted">{{ comment.created_at|to_jalali:'%Y/%m/%d' }}</small>
                                                     </div>
                                                 </div>
-                                                {% if request.user.is_authenticated and comment.author == request.user %}
-                                                    <a href="{% url 'blog:delete_comment' comment.id %}" class="text-danger"><i class="mdi mdi-delete"></i> حذف</a>
-                                                {% endif %}
+                                                
                                             {% if request.user.is_authenticated and comment.author.user == request.user %}
-                                                <a href="{% url 'blog:delete_comment' comment.id %}" class="text-danger">
+                                                <a data-comment-id="{{ comment.id }}" href="{% url 'blog:delete_comment' comment.id %}" class="text-danger delete-comment-btn">
                                                     <i class="mdi mdi-delete"></i> حذف
                                                 </a>
                                             {% endif %}
@@ -192,4 +202,51 @@
     </section>
     <!--end section-->
     <!-- End Hero -->
+    
+<!-- Delete Comment Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">حذف کامنت</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+        </div>
+  
+        <div class="modal-body">
+          آیا از حذف این کامنت مطمئن هستید؟
+        </div>
+  
+        <div class="modal-footer">
+          <form id="delete-form" method="POST" style="display: inline;">
+            {% csrf_token %}
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">لغو</button>
+            <button type="submit" class="btn btn-danger">حذف</button>
+          </form>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  
+    
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $(document).on('click', '.delete-comment-btn', function(e) {
+            e.preventDefault();
+            var commentId = $(this).data('comment-id');
+            console.log(commentId)
+            var deleteUrl = '/articles/comment/delete/' + commentId + '/';
+            $('#delete-form').attr('action', deleteUrl);
+            $('#deleteModal').modal('show');
+        });
+    });
+    setTimeout(function () {
+            $(".alert").fadeOut("slow", function () {
+                $(this).remove();
+            });
+        }, 3000);
+    
+</script>
 {% endblock %}

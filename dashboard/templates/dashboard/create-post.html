@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %} مقاله جدید{% endblock title %}
+{% block content %}
+
+ <!-- محتوای ایجاد مقاله -->
+ <div class="dashboard-wrapper">
+    <div class="container">
+        <div class="row">
+            {% include "includes/dashboard_sidebar.html" %}
+
+            
+            <!-- محتوای اصلی -->
+            <div class="col-lg-9">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="card-title mb-0">مقاله جدید</h4>
+                            <a href="{% url "dashboard:user_dashboard" %}" class="btn btn-outline-secondary">بازگشت</a>
+                        </div>
+                        
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary">ذخیره مقاله</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
