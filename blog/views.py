@@ -86,6 +86,7 @@ def delete_comment(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id)
     if comment.author.user == request.user or request.user.is_staff:
         comment.delete()
+        messages.success(request, "کامنت شما با موقیت حذف شد")
     return redirect('blog:article_detail', slug=comment.article.slug)
 
 
