@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %} ویرایش پروفایل {% endblock title %}
+
+{% block content %}
+
+<!-- محتوای ویرایش پروفایل -->
+<div class="dashboard-wrapper">
+    <div class="container">
+        <div class="row">
+            {% include "includes/dashboard_sidebar.html" %}
+            
+            
+            <!-- محتوای اصلی -->
+            <div class="col-lg-9">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="card-title mb-0">ویرایش پروفایل</h4>
+                            <a href="profile.html" class="btn btn-outline-secondary">بازگشت</a>
+                        </div>
+                        
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            {{ user_form|crispy }}
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>
+                            </div>
+                           
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

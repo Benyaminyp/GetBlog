@@ -19,9 +19,14 @@ from django.urls import path,include
 from django.conf.urls.static import static
 from . import settings
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
+    path('', include('core.urls')),
+    path('articles/', include('blog.urls')),
+    path("dashboard/", include('dashboard.urls')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

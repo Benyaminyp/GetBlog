@@ -8,8 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Premium Bootstrap 5 Blog Template" />
     <meta name="keywords" content="Startup, Business, Multi-uses, HTML, Clean, Modern, Creative" />
-    <meta name="author" content="aryaazadeh" />
-    <meta name="website" content="https://aryazdh.ir/" />
     <meta name="Version" content="v1.0.0" />
     <!-- favicon -->
     <link href="{% static 'main/images/favicon.ico' %}" rel="shortcut icon">
@@ -22,6 +20,12 @@
     <link href="{% static 'main/css/tabler-icons.min.css' %}" rel="stylesheet" />
     <!-- Main Css -->
     <link href="{% static 'main/css/style.min.css' %}" rel="stylesheet" type="text/css" id="theme-opt" />
+    <link href="{% static 'accounts/css/auth-style.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'dashboard/css/dashboard.css' %}" rel="stylesheet" type="text/css" />
+    <!--Font Awesome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
 
 </head>
 
@@ -31,7 +35,7 @@
     <header id="topnav" class="defaultscroll sticky bg-white">
         <div class="container">
             <!-- Logo container-->
-            <a class="logo" href="index-2.html">
+            <a class="logo" href="{% url 'core:home' %}">
                 <img src="{% static 'main/images/logo.png' %}" height="22" class="big-logo" alt="">
                 <img src="{% static 'main/images/logo-icon.png' %}" height="28" class="small-logo" alt="">
             </a>
@@ -54,9 +58,9 @@
                 <li class="list-inline-item mb-0">
                     <div class="search-bar">
                         <div id="search" class="menu-search mb-0">
-                            <form role="search" method="get" id="searchform" class="searchform">
+                            <form role="search" method="get" action="{% url 'blog:search_article' %}" id="searchform" class="searchform">
                                 <div>
-                                    <input type="text" class="border rounded" name="s" id="s" placeholder="جستوجو ...">
+                                    <input type="text" class="border rounded" value="{{ request.GET.search }}" name="search" placeholder="جستوجو مقالات ...">
                                     <input type="submit" id="searchsubmit" value="Search">
                                 </div>
                             </form>
@@ -64,20 +68,32 @@
                     </div>
                 </li>
 
+                {% if user.is_authenticated %}
                 <li class="list-inline-item ms-2">
-                    <a href="author.html"><img src="{% static 'main/images/users/user-3.jpg' %}" class="rounded-pill avatar avatar-sm-sm"
-                            alt=""></a>
+                    <a href="{% url "dashboard:user_dashboard" %}">
+                        {% if request.user.profile.image %}
+                            <img src="{{ request.user.profile.image.url }}" class="rounded-pill avatar avatar-sm-sm" alt="{{ request.user.email }}">
+                        {% else %} 
+                            <img src="{% static 'main/images/profile.png' %}" class="rounded-pill avatar avatar-sm-sm" alt="{{ request.user.email }}">
+                        {% endif %}
+                    </a>
                 </li>
+                {% else %}
+                <a href="{% url "login" %}">ورود / ثبت نام</a>
+                {% endif %}
+                
             </ul>
 
             <div id="navigation">
                 <!-- Navigation Menu-->
                 <ul class="navigation-menu nav-left">
-                    <li><a href="index-agency.html" class="sub-menu-item">خانه</a></li>
+                    
+                    <li><a href="{% url 'core:home' %}" class="sub-menu-item">خانه</a></li>
+                    <li><a href="{% url 'blog:article_list' %}" class="sub-menu-item">مقالات</a></li>
 
-                    <li><a href="agency-aboutus.html" class="sub-menu-item">درباره ما</a></li>
+                    <li><a href="{% url 'core:about' %}" class="sub-menu-item">درباره ما</a></li>
 
-                    <li><a href="agency-contact.html" class="sub-menu-item">تماس با ما</a></li>
+                    <li><a href="{% url 'core:contact' %}" class="sub-menu-item">تماس با ما</a></li>
                 </ul>
                 <!--end navigation menu-->
             </div>
@@ -87,7 +103,12 @@
     </header>
     <!--end header-->
     <!-- Navbar End -->
-
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{message.tags}} mt-3">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    
     {% block content %}{% endblock %}
 
     <!-- Footer Start -->
@@ -98,60 +119,33 @@
                     <div class="footer-py-60">
                         <div class="row">
                             <div class="col-lg-4 col-12 mb-0 mb-md-4 pb-0 pb-md-2">
-                                <a href="#" class="logo-footer">
+                                <a href="{% url 'core:home' %}" class="logo-footer">
                                     <img src="{% static 'main/images/logo-light.png' %}" height="22" alt="">
                                 </a>
 
                                 <p class="mt-4">پروژه های طراحی ما تازه و ساده هستند و سود زیادی برای کسب و کار شما
                                     خواهند داشت. درباره کار ما بیشتر بدانید!</p>
                                 <ul class="list-unstyled social-icon foot-social-icon mb-0 mt-4">
-                                    <li class="list-inline-item"><a href="javascript:void(0)" class="rounded"><i
-                                                class="mdi mdi-facebook"></i></a></li>
-                                    <li class="list-inline-item"><a href="javascript:void(0)" class="rounded"><i
-                                                class="mdi mdi-instagram"></i></a></li>
-                                    <li class="list-inline-item"><a href="javascript:void(0)" class="rounded"><i
-                                                class="mdi mdi-twitter"></i></a></li>
-                                    <li class="list-inline-item"><a href="javascript:void(0)" class="rounded"><i
-                                                class="mdi mdi-github"></i></a></li>
-                                    <li class="list-inline-item"><a href="javascript:void(0)" class="rounded"><i
-                                                class="mdi mdi-linkedin"></i></a></li>
-                                    <li class="list-inline-item"><a href="javascript:void(0)" class="rounded"><i
-                                                class="mdi mdi-whatsapp"></i></a></li>
+                                    {% if site_settings.instagram_link %}
+                                        <li class="list-inline-item"><a href="{{ site_settings.instagram_link }}" class="rounded"><i class="mdi mdi-instagram"></i></a></li>
+                                    {% endif %}
+                                    {% if site_settings.telegram_link %}
+                                        <li class="list-inline-item"><a href="{{ site_settings.telegram_link }}" class="rounded"><i class="mdi mdi-telegram"></i></a></li>
+                                    {% endif %}
                                 </ul>
                                 <!--end icon-->
-                            </div>
-                            <!--end col-->
-
-                            <div class="col-lg-2 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                <h5 class="footer-head">شرکت</h5>
-                                <ul class="list-unstyled footer-list mt-4">
-                                    <li><a href="javascript:void(0)" class="text-foot"><i
-                                                class="ti ti-chevron-left me-1"></i> درباره ما</a></li>
-                                    <li><a href="javascript:void(0)" class="text-foot"><i
-                                                class="ti ti-chevron-left me-1"></i> خدمات</a></li>
-                                    <li><a href="javascript:void(0)" class="text-foot"><i
-                                                class="ti ti-chevron-left me-1"></i> تیم</a></li>
-                                    <li><a href="javascript:void(0)" class="text-foot"><i
-                                                class="ti ti-chevron-left me-1"></i> قیمت</a></li>
-                                    <li><a href="javascript:void(0)" class="text-foot"><i
-                                                class="ti ti-chevron-left me-1"></i> پروژه</a></li>
-                                </ul>
                             </div>
                             <!--end col-->
 
                             <div class="col-lg-3 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
                                 <h5 class="footer-head">لینک های مفید</h5>
                                 <ul class="list-unstyled footer-list mt-4">
-                                    <li><a href="javascript:void(0)" class="text-foot"><i
-                                                class="ti ti-chevron-left me-1"></i> شرایط خدمات</a></li>
-                                    <li><a href="javascript:void(0)" class="text-foot"><i
-                                                class="ti ti-chevron-left me-1"></i> خط مشی</a></li>
-                                    <li><a href="javascript:void(0)" class="text-foot"><i
-                                                class="ti ti-chevron-left me-1"></i> مستندات</a></li>
-                                    <li><a href="javascript:void(0)" class="text-foot"><i
-                                                class="ti ti-chevron-left me-1"></i> تغییرات</a></li>
-                                    <li><a href="javascript:void(0)" class="text-foot"><i
-                                                class="ti ti-chevron-left me-1"></i> اجزاء</a></li>
+                                    <li><a href="{% url 'blog:article_list' %}" class="text-foot"><i
+                                                class="ti ti-chevron-left me-1"></i> مقالات</a></li>
+                                    <li><a href="{% url 'core:about' %}" class="text-foot"><i
+                                                class="ti ti-chevron-left me-1"></i> درباره ما</a></li>
+                                    <li><a href="{% url 'core:contact' %}" class="text-foot"><i
+                                                class="ti ti-chevron-left me-1"></i> تماس با ما</a></li>
                                 </ul>
                             </div>
                             <!--end col-->
@@ -160,23 +154,27 @@
                                 <h5 class="footer-head">سوالی دارید؟</h5>
 
                                 <ul class="list-unstyled footer-list mt-4">
-                                    <li class="d-flex">
-                                        <span class="ti ti-mail fs-5"></span>
-                                        <div class="flex-1 me-2">
-                                            <span class="d-block text-light">با ما در تماس باشید</span>
-                                            <a href="mailto:contact@example.com"
-                                                class="text-foot d-block mt-2">contact@example.com</a>
-                                        </div>
-                                    </li>
+                                    {% if site_settings.email %}
+                                        <li class="d-flex">
+                                            <span class="ti ti-mail fs-5"></span>
+                                            <div class="flex-1 me-2">
+                                                <span class="d-block text-light">با ما در تماس باشید</span>
+                                                <a href="mailto:contact@example.com"
+                                                    class="text-foot d-block mt-2">{{ site_settings.email }}</a>
+                                            </div>
+                                        </li>
+                                    {% endif %}
 
-                                    <li class="d-flex">
-                                        <span class="ti ti-phone fs-5"></span>
-                                        <div class="flex-1 me-2">
-                                            <span class="d-block text-light">تماس بگیرید</span>
-                                            <a href="tel:+152534-468-854"
-                                                class="text-foot d-block mt-2">+152534-468-854</a>
-                                        </div>
-                                    </li>
+                                    {% if site_settings.phone %}
+                                        <li class="d-flex">
+                                            <span class="ti ti-phone fs-5"></span>
+                                            <div class="flex-1 me-2">
+                                                <span class="d-block text-light">تماس بگیرید</span>
+                                                <a href="tel:+152534-468-854"
+                                                    class="text-foot d-block mt-2">{{ site_settings.phone }}</a>
+                                            </div>
+                                        </li>
+                                    {% endif %}
                                 </ul>
                             </div>
                             <!--end col-->
@@ -197,25 +195,16 @@
                         <div class="row align-items-center">
                             <div class="col-sm-6">
                                 <div class="text-sm-start">
-                                    <p class="mb-0">©
-                                        <script>document.write(new Date().getFullYear())</script> گت بلاگ. راستچین شده
-                                        با<i class="mdi mdi-heart text-danger"></i> توسط <a
-                                            href="https://www.rtl-theme.com/author/aryaazadeh/products/" target="_blank"
-                                            class="text-reset">آریا آزاده</a>. فروش فقط در راستچین
-                                    </p>
+                                    <p class="mb-0">© {{ site_settings.copy_right }}</p>
                                 </div>
                             </div>
                             <!--end col-->
 
                             <div class="col-sm-6 mt-4 mt-sm-0 pt-2 pt-sm-0">
                                 <ul class="list-unstyled footer-list terms-service text-sm-end mb-0">
-                                    <li class="list-inline-item mb-0"><a href="javascript:void(0)"
-                                            class="text-foot me-2">حریم خصوصی</a></li>
-                                    <li class="list-inline-item mb-0"><a href="javascript:void(0)"
-                                            class="text-foot me-2">شرایط</a></li>
-                                    <li class="list-inline-item mb-0"><a href="javascript:void(0)"
-                                            class="text-foot me-2">سوالات متداول</a></li>
-                                    <li class="list-inline-item mb-0"><a href="javascript:void(0)"
+                                    <li class="list-inline-item mb-0"><a href="{% url 'core:about' %}"
+                                            class="text-foot me-2">درباره ما</a></li>
+                                    <li class="list-inline-item mb-0"><a href="{% url 'core:contact' %}"
                                             class="text-foot me-2">تماس با ما</a></li>
                                 </ul>
                             </div>
@@ -239,11 +228,17 @@
     <!-- Back to top -->
 
     <!-- javascript -->
+
     <script src="{% static 'main/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'main/js/tiny-slider.js' %}"></script>
     <script src="{% static 'main/js/plugins.init.js' %}"></script>
     <!--Note: All init js like tiny slider, counter, lightbox, gallery etc.-->
     <script src="{% static 'main/js/app.js' %}"></script>
+    <script src="{% static 'accounts/js/auth.js' %}"></script>
+    <script src="{% static 'dashboard/js/dashboard.js' %}"></script>
+    <script src="/static/ckeditor/ckeditor-init.js"></script>
+    <script src="/static/ckeditor/ckeditor/ckeditor.js"></script>
+    
     <!--Note: All important javascript like page loader, menu, sticky menu, menu-toggler, one page menu etc. -->
 </body>
 
